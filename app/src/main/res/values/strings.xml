@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Budgetti</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="paid_textView">PAID:</string>
+    <string name="left_textView">LEFT:</string>
+    <string name="del_button">DEL!</string>
+    <string name="add_btn">ADD!</string>
+    <string name="Summery_text">Large Text</string>
+    <string name="Reset_Button">RESET</string>
+    <string name="euro_zeichnen">€</string>
+    <string name="euro_zeichen">€</string>
+    <string name="name_tv">Name:</string>
+    <string name="name1_tv">NAME:</string>
+    <string name="b_btn">B</string>
+
+</resources>
