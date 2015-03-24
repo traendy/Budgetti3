@@ -88,6 +88,7 @@ public class MainActivity extends Activity {
         calculateButton = (Button) findViewById(R.id.calculateButton);
         btn_b = (Button) findViewById(R.id.btn_b);
         StringList = new ArrayList();
+
         chargeList = new ArrayList<Charges>();
         listView = (ListView) findViewById(R.id.listView);
         //loadChargeList();
