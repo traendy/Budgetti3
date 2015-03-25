@@ -29,31 +29,38 @@ public class createPasswortActivity extends Activity {
         submit_btn = (Button)findViewById(R.id.submit_btn);
         accept_tv.setVisibility(View.INVISIBLE);
         notaccepted_tv.setVisibility(View.INVISIBLE);
-        submit_btn.setVisibility(View.INVISIBLE);
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(password_2.getText().toString().length()>=1  && password_2.getText().toString().length()<=3)
+                {
+                    notaccepted_tv.setText("Passwords need to be\nat least 3 didgits long!");
+                    notaccepted_tv.setVisibility(View.VISIBLE);
+                    accept_tv.setVisibility(View.INVISIBLE);
+                    return;
+                }
+                if(!(password_1.getText().toString().equals(password_2.getText().toString()))&&password_2.getText().toString().length()>=3) {
+                    notaccepted_tv.setText("Passwords need to be\nthe same!");
+                    notaccepted_tv.setVisibility(View.VISIBLE);
+                    accept_tv.setVisibility(View.INVISIBLE);
+                    return;
+                }
+                if(password_1.getText().toString().length()>=3 && password_2.getText().toString().length()>=3 && password_1.getText().toString().equals(password_2.getText().toString())){
 
-            if(password_2.getText().toString().length()>=1  && password_2.getText().toString().length()<=3){
-                notaccepted_tv.setText("Passwords need to be\nat least 3 didgits long!");
-                notaccepted_tv.setVisibility(View.VISIBLE);
-                submit_btn.setVisibility(View.INVISIBLE);
-                accept_tv.setVisibility(View.INVISIBLE);
+                    accept_tv.setVisibility(View.VISIBLE);
+                    notaccepted_tv.setVisibility(View.INVISIBLE);
+
+                        submitClicked();
+
+                }
             }
-            if(!(password_1.getText().toString().equals(password_2.getText().toString()))&&password_2.getText().toString().length()>=3){
-                notaccepted_tv.setText("Passwords need to be\nthe same!");
-                notaccepted_tv.setVisibility(View.VISIBLE);
-                submit_btn.setVisibility(View.INVISIBLE);
-                accept_tv.setVisibility(View.INVISIBLE);
-            }
+        });
+
+    }
 
 
-            if(password_1.getText().toString().length()>=3 && password_2.getText().toString().length()>=3 && password_1.getText().toString().equals(password_2.getText().toString())){
-                submit_btn.setVisibility(View.VISIBLE);
-                accept_tv.setVisibility(View.VISIBLE);
-                notaccepted_tv.setVisibility(View.INVISIBLE);
-            }
-        }
+    public void submitClicked(){
 
-
-    public void submitClicked(View view){
 
         password =password_2.getText().toString();
         Password pw= new Password();

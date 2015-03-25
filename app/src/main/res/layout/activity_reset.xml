@@ -39,5 +39,5 @@
         android:text="Confirm"
         android:id="@+id/budget_confirm_btn"
         android:layout_gravity="center_horizontal"
-        android:onClick="confirmBudget" />
+        />
 </LinearLayout>

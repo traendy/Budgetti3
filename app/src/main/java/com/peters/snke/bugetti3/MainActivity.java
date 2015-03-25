@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_main);
         contextOfApplication=getApplicationContext();
         bm = new BudgetManager();
         pw= new Password();
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
 
 
         Log.i(LOG_TAG, "Creating " + getClass() + " at " + System.currentTimeMillis());
-        setContentView(R.layout.activity_main);
+
 
 
         try {

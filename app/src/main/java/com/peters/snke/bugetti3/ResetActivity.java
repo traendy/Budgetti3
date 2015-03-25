@@ -19,20 +19,28 @@ public class ResetActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView( R.layout.activity_reset);
         budget_et= (EditText)findViewById(R.id.budget_et);
         password_et= (EditText)findViewById(R.id.password_et);
         budget_confirm_btn=(Button)findViewById(R.id.budget_confirm_btn);
-        while(budget_et.getText().toString().equals("")&& !password_et.getText().toString().equals(getPW())){
-        budget_confirm_btn.setVisibility(View.INVISIBLE);}
-        if(!(budget_et.getText().toString().equals("")) && (password_et.getText().toString().equals(getPW()))){
-            budget_confirm_btn.setVisibility(View.VISIBLE);
-        }
+        budget_confirm_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(budget_et.getText().toString().equals("")&& !password_et.getText().toString().equals(getPW())){
+                    budget_et.setText("lol, nein");
+                    return;}
+                if(!(budget_et.getText().toString().isEmpty()) && (password_et.getText().toString().equals(getPW()))){
+                   confirmBudget();
+                }
+            }
+        });
+
     }
-    private void confirmBudget (View view){
+    private void confirmBudget (){
         bm= new BudgetManager();
         bm.setBudget(Float.parseFloat(budget_et.getText().toString()));
         Toast.makeText(this, "Budget is now: " +budget_et.getText().toString(), Toast.LENGTH_SHORT).show();
-        Intent menuIntent= new Intent(this, MainActivity.class);
+        Intent menuIntent= new Intent(ResetActivity.this, MainActivity.class);
         startActivity(menuIntent);
         this.finish();
     }
