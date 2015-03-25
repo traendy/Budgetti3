@@ -135,10 +135,14 @@ public class MainActivity extends Activity {
 
 
     public void calculate(View view) {
-        System.out.println("calculate");
+
         float newBudget;
-        //todo check if database gets items, calculate leftbudget and update everything
+
         Charges charge = getChargeFromView();
+        if(charge==null){
+            Toast.makeText(this, "no paid-value", Toast.LENGTH_SHORT).show();
+            return;
+        }
         newBudget = bm.getBudget() - charge.getCharge_amount();
         bm.setBudget(newBudget);
         ResultText.setText(String.valueOf(newBudget) + " €");
@@ -149,6 +153,11 @@ public class MainActivity extends Activity {
     }
 
     private void updateListView() {
+        try {
+            createListAdapter();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addChargeToDb(Charges charge) {
@@ -170,8 +179,11 @@ public class MainActivity extends Activity {
     private Charges getChargeFromView() {
         DateManager dm= new DateManager();
         Charges charge = new Charges();
-        charge.setCharge_name(AddName.getText().toString());
-        charge.setCharge_amount(Float.parseFloat(AddCosts.getText().toString()));
+
+        if(AddName.getText().toString().isEmpty()) charge.setCharge_name("Default");
+        else charge.setCharge_name(AddName.getText().toString());
+        if(AddCosts.getText().toString().isEmpty())return null;
+        else charge.setCharge_amount(Float.parseFloat(AddCosts.getText().toString()));
         charge.setDate(dm.getDate());
         return charge;
     }

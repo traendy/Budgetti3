@@ -14,9 +14,9 @@ public class Password {
 
     public String getPassword() {
         SharedPreferences preferences =PreferenceManager.getDefaultSharedPreferences(applicationContext);
-        if(preferences.getString("passwod","").equals(null)||preferences.getString("passwod","").equals(""))
+        if(preferences.getString("password","").equals(null)||preferences.getString("password","").equals(""))
             return "E";
-        else return preferences.getString("passwod","");
+        else return preferences.getString("password","");
     }
 
     public void setPassword(String password) {

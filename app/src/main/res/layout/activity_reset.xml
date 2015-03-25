@@ -1,43 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#828c8f67"
+    android:padding="5dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal"
+        android:background="#828c8f67"
+        android:src="@drawable/head"
+        android:adjustViewBounds="true"
+        android:paddingBottom="5dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Budget:"
         android:id="@+id/textView3"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="#828c8f67"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:paddingTop="5dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/budget_et"
         android:layout_gravity="center_horizontal"
-        android:inputType="numberDecimal" />
+        android:inputType="numberDecimal"
+        android:padding="5dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Password:"
         android:id="@+id/textView4"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="#828c8f67"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:padding="5dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/password_et" />
+        android:id="@+id/password_et"
+        android:padding="5dp" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Confirm"
         android:id="@+id/budget_confirm_btn"
         android:layout_gravity="center_horizontal"
-        />
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:background="#828c8f67"
+        android:padding="5dp" />
 </LinearLayout>
