@@ -190,11 +190,9 @@ public class MainActivity extends Activity {
 
 
     public void testapp(View view) {
-        try {
-            checkDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Intent BudgetIntent = new Intent(this,BudgetActivity.class);
+        startActivity(BudgetIntent);
+        this.finish();
 
     }
 

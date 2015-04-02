@@ -114,7 +114,7 @@
             android:id="@+id/resButton"
             android:textStyle="bold"
             android:textSize="@dimen/abc_action_bar_icon_vertical_padding_material"
-            android:background="#828f1600"
+            android:background="#bf888b65"
             android:onClick="reset"
             android:layout_weight="0.8" />
 
