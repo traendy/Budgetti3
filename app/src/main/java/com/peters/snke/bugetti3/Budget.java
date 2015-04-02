@@ -10,9 +10,9 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Budget{
     @DatabaseField (generatedId = true)
     int id;
-    @DatabaseField
+    @DatabaseField(defaultValue = "default")
     String name;
-    @DatabaseField(columnName = "amount")
+    @DatabaseField(columnName = "amount",defaultValue = "0.0f")
     float amount;
 
     public Budget() {

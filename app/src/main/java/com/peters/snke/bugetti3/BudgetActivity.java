@@ -34,7 +34,7 @@ public class BudgetActivity extends Activity {
     List overview, definitions, amounts;
     Context applicationContext = MainActivity.getContextOfApplication();
     BudgetDatabaseHelper helper;
-
+    ListAdapter overviewAdapter;
     Dao<Budget, Integer> budgetdao;
 
 
@@ -123,29 +123,32 @@ public class BudgetActivity extends Activity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        final ListAdapter overviewAdapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,overview);
+        overviewAdapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,overview);
         overview_lv.setAdapter(overviewAdapter);
         overview_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id ) {
-           System.out.println(position);
-                 
-                try {
-               helper.getBudgetdao().deleteById(position);
-                   // budgetdao.deleteById(position);
-
-                    //amounts.remove(position);
-                   overview.remove(position);
-                   // definitions.remove(position);
-                    overview_lv.invalidateViews();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                for( int i = 0; i<overview.size();i++){
+                    System.out.println("--------------");
+                    System.out.println("overview: "+ overview.get(i));
+                    System.out.println("--------------");
                 }
+                try {
+                    budgetdao.deleteById(position);
+                    overview.clear();
+                    overview = budgetdao.queryForAll();
 
-                //todo item delete methode
+                    //overview_lv.deferNotifyDataSetChanged();
+                    //upDatedata(); notifydatasetchanged???? warum findet er diese methode nicht -.-
+                    overview_lv.invalidateViews();
+                    overview_lv.setAdapter(overviewAdapter);
+                }catch(Exception e){
+
+                }
             }
         });
     }
+
 
     private void addincome(){
         Budget newBudget = new Budget();
@@ -159,9 +162,11 @@ public class BudgetActivity extends Activity {
 
         try {
             budgetdao.create(newBudget);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         initializeListView();
     }
     private void addloss(){

@@ -15,7 +15,7 @@ import java.sql.SQLException;
  */
 public class BudgetDatabaseHelper  extends OrmLiteSqliteOpenHelper{
 
-    private static final String DATABASE_NAME = "budget2.db";
+    private static final String DATABASE_NAME = "budget3.db";
     private static int DATABASE_VERSION = 1;
 
     private Dao<Budget, Integer> budgetdao=null;
