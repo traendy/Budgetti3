@@ -31,7 +31,7 @@ public class BudgetActivity extends Activity {
     Button approve_btn, income_btn, expensives_btn;
     TextView budget_tv;
     ListView overview_lv;
-    List overview, definitions, amounts;
+    List overview;
     Context applicationContext = MainActivity.getContextOfApplication();
     BudgetDatabaseHelper helper;
     ListAdapter overviewAdapter;
@@ -64,9 +64,9 @@ public class BudgetActivity extends Activity {
 
         //todo liste optimieren
 
-        amounts = new ArrayList<Float>();
+
         overview= new ArrayList<String>();
-        definitions= new ArrayList<Budget>();
+
         initializeListView();
 
         approve_btn.setOnClickListener(new View.OnClickListener() {
@@ -75,10 +75,7 @@ public class BudgetActivity extends Activity {
                 /*approve();*/
                 try {
                     helper.deleteAll();
-                    overview.clear();
-                    amounts.clear();
-                    definitions.clear();
-                    initializeListView();
+                    overview.clear();    initializeListView();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -101,25 +98,31 @@ public class BudgetActivity extends Activity {
         income_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 addincome();
-                calBudget();
-
-            }
-        });
+                calBudget();} });
         expensives_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 addloss();
-                calBudget();
-            }
-        });
+                calBudget();}});
     }
 
     private void initializeListView() {
         try {
             overview= budgetdao.queryForAll();
+            System.out.println("-------list-------");
+            for( int i = 0; i<overview.size();i++){
+
+                System.out.println("overview: "+ overview.get(i));
+
+            }
+            System.out.println("-------db-------");
+            for( int i = 0; i<10;i++){
+
+                System.out.println("overview: "+ budgetdao.queryForId(i+1));
+
+            }
+            System.out.println("--------------");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -128,20 +131,16 @@ public class BudgetActivity extends Activity {
         overview_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id ) {
-                for( int i = 0; i<overview.size();i++){
-                    System.out.println("--------------");
-                    System.out.println("overview: "+ overview.get(i));
-                    System.out.println("--------------");
-                }
-                try {
-                    budgetdao.deleteById(position);
-                    overview.clear();
-                    overview = budgetdao.queryForAll();
 
-                    //overview_lv.deferNotifyDataSetChanged();
-                    //upDatedata(); notifydatasetchanged???? warum findet er diese methode nicht -.-
-                    overview_lv.invalidateViews();
-                    overview_lv.setAdapter(overviewAdapter);
+                try {
+                    Budget tb= new Budget();
+                    tb= (Budget) overview.get(position);
+                    List test=budgetdao.queryForMatching(tb);
+                    budgetdao.delete(test);
+
+
+                    initializeListView();
+
                 }catch(Exception e){
 
                 }
@@ -159,14 +158,12 @@ public class BudgetActivity extends Activity {
 
         newBudget.setName(name_et.getText().toString());
         newBudget.setAmount(Float.parseFloat(amount_et.getText().toString()));
-
+        System.out.println("Id der neuen Budgeteinheit:"+newBudget.getId());
         try {
             budgetdao.create(newBudget);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         initializeListView();
     }
     private void addloss(){
@@ -189,16 +186,10 @@ public class BudgetActivity extends Activity {
 
     private void calBudget(){
         float Budget=0.0f;
-        try {
-            definitions=budgetdao.queryForAll();
-            for(int i =0; i<definitions.size(); i++){
-                Budget testbudget = (Budget) definitions.get(i);
+            for(int i =0; i<overview.size(); i++){
+                Budget testbudget = (Budget) overview.get(i);
                 Budget+=(testbudget.getAmount());
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         budget_tv.setText(String.valueOf(Budget));
     }
 
