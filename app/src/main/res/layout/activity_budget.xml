@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#bf888b65">
+    android:background="#bf888b65"
+    android:padding="5dp">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -21,7 +22,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
 
             android:layout_marginBottom="5dp"
             android:background="#bf888b65">
@@ -50,7 +51,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
 
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
@@ -75,7 +76,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
 
             android:background="#bf888b65">
 
@@ -112,7 +113,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
 
             android:background="#bf888b65">
 

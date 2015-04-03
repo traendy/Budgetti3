@@ -42,6 +42,15 @@ public class BudgetManager {
         editor.commit();
 
     }
+    public Float getMainBudget(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+        SharedPreferences.Editor editor =preferences.edit();
+        editor.putFloat("budget",preferences.getFloat("mainbudget",0.0f));
+        editor.commit();
+        Budget = preferences.getFloat("budget", 0.0f);
+        if(Budget==null)return 0.0f;
+        return Budget;
+    }
 
 
 }

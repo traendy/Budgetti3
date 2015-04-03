@@ -5,24 +5,22 @@
     android:orientation="vertical"
 
     tools:context=".MainActivity"
-    android:weightSum="1"
+
     android:background="#828c8f67"
     android:padding="5dp">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:id="@+id/HeadView"
         android:background="#828c8f67"
         android:src="@drawable/head"
-        android:layout_weight="0.001"
         android:baselineAlignBottom="false"
         android:adjustViewBounds="true" />
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1.01"
+        android:layout_height="250dp"
         android:id="@+id/listView"
         android:layout_margin="10dp"
         android:background="#828c8f67"
@@ -32,39 +30,41 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.001"
+
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:background="#828c8f67">
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1">
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+           >
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="35dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/name1_tv"
             android:id="@+id/Name"
-            android:layout_weight="0.5"
+
             android:textStyle="bold"
             android:gravity="center"
-            android:layout_margin="1dp"
-            android:background="#828c8f67" />
+            android:layout_margin="3dp"
+            android:background="#828c8f67"
+            android:layout_weight="1" />
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="35dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/paid_textView"
                 android:id="@+id/Paid"
-                android:layout_weight="0.5"
+
                 android:textStyle="bold"
                 android:gravity="center"
-                android:layout_margin="1dp"
-                android:background="#828c8f67" />
+                android:layout_margin="3dp"
+                android:background="#828c8f67"
+                android:layout_weight="1" />
 
 
 
@@ -72,35 +72,37 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1">
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            >
             <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
                 android:id="@+id/Addname"
-                android:layout_weight="1"
+
                 android:gravity="center"
 
-                android:layout_margin="1dp"
-                android:background="#828c8f67" />
+                android:layout_margin="3dp"
+                android:background="#828c8f67"
+                android:layout_weight="1" />
 
             <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
                 android:id="@+id/Addcosts"
-                android:layout_weight="1"
+
                 android:gravity="center"
                 android:inputType="numberDecimal"
-                android:layout_margin="1dp"
-                android:background="#828c8f67" />
+                android:layout_margin="3dp"
+                android:background="#828c8f67"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.03"
+        android:layout_height="50dp"
+
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:layout_marginRight="5dp"
@@ -108,54 +110,54 @@
         android:background="#828c8f67">
 
         <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="@string/Reset_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Budget"
             android:id="@+id/resButton"
             android:textStyle="bold"
-            android:textSize="@dimen/abc_action_bar_icon_vertical_padding_material"
-            android:background="#bf888b65"
+            android:textSize="20sp"
+            android:background="#828f1600"
             android:onClick="reset"
-            android:layout_weight="0.8" />
+            android:layout_weight="1" />
 
         <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="@string/add_btn"
-            android:layout_weight="0.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Charge"
+
             android:id="@+id/calculateButton"
 
             android:onClick="calculate"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:background="#a18c8f67" />
+            android:background="#a18c8f67"
+            android:layout_weight="1" />
 
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="43dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:weightSum="1"
+
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:background="#828c8f67">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
             android:text="@string/b_btn"
             android:id="@+id/btn_b"
             android:background="#a18c8f67"
             android:textStyle="bold"
             android:textSize="30sp"
-            android:layout_weight="1"
             android:gravity="center"
             android:onClick="testapp" />
 
         <TextView
-            android:layout_width="135dp"
-            android:layout_height="match_parent"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/left_textView"
             android:id="@+id/Left"
@@ -163,8 +165,8 @@
             android:gravity="center" />
 
         <TextView
-            android:layout_width="184dp"
-            android:layout_height="match_parent"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/ResultText"
             android:textStyle="bold"

@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
         Paid = (TextView) findViewById(R.id.Paid);
         Left = (TextView) findViewById(R.id.Left);
         ResultText = (TextView) findViewById(R.id.ResultText);
-        ResultText.setText(String.valueOf(bm.getBudget()) + " €");
+        ResultText.setText(String.valueOf(bm.getMainBudget()) + " €");
         resButton = (Button) findViewById(R.id.resButton);
         calculateButton = (Button) findViewById(R.id.calculateButton);
         btn_b = (Button) findViewById(R.id.btn_b);
@@ -196,20 +196,6 @@ public class MainActivity extends Activity {
 
     }
 
-    public void checkDatabase() throws SQLException {
-        Dao<Charges, Integer> dao = null;
-        dao = helper.getChargeDao();
-
-        System.out.println("_________________---------");
-        System.out.println("|checkDatabase: ");
-        System.out.println("|getConnectionSource: " + dao.getConnectionSource());
-        System.out.println("|queryforid 0 : " + dao.queryForId(0));
-        System.out.println("|queryforid 1 : " + dao.queryForId(1));
-        System.out.println("|queryforid 2 : " + dao.queryForId(2));
-        System.out.println("|queryforid 3 : " + dao.queryForId(3));
-        System.out.println("_________________-----------");
-
-    }
 
     public static Context getContextOfApplication() {
         return contextOfApplication;

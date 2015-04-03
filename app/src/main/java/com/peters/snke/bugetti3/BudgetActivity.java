@@ -72,26 +72,22 @@ public class BudgetActivity extends Activity {
         approve_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*approve();*/
-                try {
-                    helper.deleteAll();
-                    overview.clear();    initializeListView();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                approve();
+
             }
 
             private void approve() {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-                SharedPreferences.Editor editor = preferences.edit();
+
                 if(budget_tv.getText().toString().isEmpty()){
                    Toast.makeText(applicationContext, "Budget konnte nicht erfasst werden", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                editor.putFloat("budget", Float.parseFloat(budget_tv.getText().toString()));
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putFloat("mainbudget", Float.parseFloat(budget_tv.getText().toString()));
                 editor.commit();
                 Toast.makeText(applicationContext,"Budget wurde gesetzt", Toast.LENGTH_SHORT).show();
-                Intent mainIntent = new Intent(applicationContext, MainActivity.class);
+                Intent mainIntent = new Intent(BudgetActivity.this, MainActivity.class);
                 startActivity(mainIntent);
             }
         });
@@ -109,20 +105,9 @@ public class BudgetActivity extends Activity {
 
     private void initializeListView() {
         try {
+
             overview= budgetdao.queryForAll();
-            System.out.println("-------list-------");
-            for( int i = 0; i<overview.size();i++){
-
-                System.out.println("overview: "+ overview.get(i));
-
-            }
-            System.out.println("-------db-------");
-            for( int i = 0; i<10;i++){
-
-                System.out.println("overview: "+ budgetdao.queryForId(i+1));
-
-            }
-            System.out.println("--------------");
+            calBudget();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -133,10 +118,10 @@ public class BudgetActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id ) {
 
                 try {
-                    Budget tb= new Budget();
-                    tb= (Budget) overview.get(position);
-                    List test=budgetdao.queryForMatching(tb);
-                    budgetdao.delete(test);
+                    //Budget tb= new Budget();
+                   // tb= (Budget) overview.get(position);
+                    //List test=budgetdao.queryForMatching((Budget) overview.get(position));
+                    budgetdao.delete(budgetdao.queryForMatching((Budget) overview.get(position)));
 
 
                     initializeListView();
@@ -158,7 +143,7 @@ public class BudgetActivity extends Activity {
 
         newBudget.setName(name_et.getText().toString());
         newBudget.setAmount(Float.parseFloat(amount_et.getText().toString()));
-        System.out.println("Id der neuen Budgeteinheit:"+newBudget.getId());
+
         try {
             budgetdao.create(newBudget);
         } catch (SQLException e) {
