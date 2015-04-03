@@ -43,11 +43,13 @@ public class ResetActivity extends Activity {
         reset_budget_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+
+
                 if(!password_et.getText().toString().equals(getPW())){
                     Toast.makeText(ResetActivity.this, "Wrong Password", Toast.LENGTH_SHORT).show();
                     return;}
                 if((password_et.getText().toString().equals(getPW()))){
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
                     SharedPreferences.Editor editor =preferences.edit();
                     if(preferences.getFloat("mainbudget", 0.0f)==0.0f){
                         Toast.makeText(ResetActivity.this, "No Budget found! Define one!", Toast.LENGTH_SHORT).show();
