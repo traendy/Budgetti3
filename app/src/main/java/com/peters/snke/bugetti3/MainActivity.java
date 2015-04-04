@@ -3,16 +3,12 @@ package com.peters.snke.bugetti3;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,52 +16,52 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 
 public class MainActivity extends Activity {
+    public static Context contextOfApplication;
     private final String LOG_TAG = getClass().getSimpleName();
     Context context = this;
     EditText AddCosts, AddName;
     TextView Paid, Left, ResultText;
     Button resButton, calculateButton, btn_b;
-    ListView listView;
+    ExpandableListView expListView;
     Password pw;
     DatabaseHelper helper;
     List<Charges> chargeList;
-    List<String> StringList;
-    private Float Budget;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
+    ExpandableListAdapter listAdapter;
     BudgetManager bm;
-    private String password="";
-    public static Context contextOfApplication;
+
+    public static Context getContextOfApplication() {
+        return contextOfApplication;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        contextOfApplication=getApplicationContext();
+        contextOfApplication = getApplicationContext();
         bm = new BudgetManager();
-        pw= new Password();
+        pw = new Password();
         helper = new DatabaseHelper(getApplicationContext());
-       // helper = new DatabaseHelper(this);
+        // helper = new DatabaseHelper(this);
         try {
             initialize();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if(pw.getPassword().equals("E")){
+        if (pw.getPassword().equals("E")) {
             Intent createPasswordIntent = new Intent(this, createPasswortActivity.class);
             startActivity(createPasswordIntent);
-            }
+        }
 
 
         Log.i(LOG_TAG, "Creating " + getClass() + " at " + System.currentTimeMillis());
-
 
 
         try {
@@ -87,39 +83,54 @@ public class MainActivity extends Activity {
         resButton = (Button) findViewById(R.id.resButton);
         calculateButton = (Button) findViewById(R.id.calculateButton);
         btn_b = (Button) findViewById(R.id.btn_b);
-        StringList = new ArrayList();
+
 
         chargeList = new ArrayList<Charges>();
-        listView = (ListView) findViewById(R.id.listView);
+        expListView = (ExpandableListView) findViewById(R.id.expListView);
         //loadChargeList();
         createListAdapter();
     }
 
     private void createListAdapter() throws SQLException {
-        loadChargeList();
-        ListAdapter adapter = new ArrayAdapter<Charges>(getApplicationContext(), android.R.layout.simple_list_item_1, chargeList);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TOdo
-            }
-        });
+        loadChargeList();//prepare list data here
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        expListView.setAdapter(listAdapter);
+
     }
 
     private void loadChargeList() throws SQLException {
         Dao<Charges, Integer> dao = null;
         dao = helper.getChargeDao();
-
         chargeList = dao != null ? dao.queryForAll() : null;
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+        String oldDate, newDate;
+        for (int i = 0; i < chargeList.size(); i++) {
+            newDate = chargeList.get(i).getDate();
+            listDataHeader.add(newDate);
+            for (int k = 0; k < listDataHeader.size(); k++) {
+                int n = listDataHeader.size();
+                oldDate = listDataHeader.get(k);
+                if (n <= k + 1) {
+                    newDate = listDataHeader.get(k + 1);
+                }
+                if (oldDate == newDate) listDataHeader.remove(k + 1);
+            }
+        }
+        for (int l = 0; l < listDataHeader.size(); l++) {
+            List<String> childList = new ArrayList<String>();
+            String HeaderDate = listDataHeader.get(l);
+            int m = 0;
+            StringBuilder sb = new StringBuilder();
+            while (HeaderDate == chargeList.get(m).getDate()) {
+                sb.append(chargeList.get(m).getCharge_name()).append(": \t\t").append(String.valueOf(chargeList.get(m).getCharge_amount()));
+                childList.add(sb.toString());
+                m++;
+            }
+            listDataChild.put(listDataHeader.get(l), childList);
+        }
+
     }
-
-    public String chargeToString(Charges charge) {
-
-
-        return charge.toString();
-    }
-
 
     public void reset(View view) throws SQLException {
         Dao<Charges, Integer> dao = null;
@@ -127,19 +138,17 @@ public class MainActivity extends Activity {
         dao.delete(chargeList);
         helper.deleteAll();
 
-            Intent resetIntent = new Intent(this, ResetActivity.class);
-            startActivity(resetIntent);
-            this.finish();
-        }
-
-
+        Intent resetIntent = new Intent(this, ResetActivity.class);
+        startActivity(resetIntent);
+        this.finish();
+    }
 
     public void calculate(View view) {
 
         float newBudget;
 
         Charges charge = getChargeFromView();
-        if(charge==null){
+        if (charge == null) {
             Toast.makeText(this, "no paid-value", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -177,28 +186,22 @@ public class MainActivity extends Activity {
     }
 
     private Charges getChargeFromView() {
-        DateManager dm= new DateManager();
+        DateManager dm = new DateManager();
         Charges charge = new Charges();
 
-        if(AddName.getText().toString().isEmpty()) charge.setCharge_name("Default");
+        if (AddName.getText().toString().isEmpty()) charge.setCharge_name("Default");
         else charge.setCharge_name(AddName.getText().toString());
-        if(AddCosts.getText().toString().isEmpty())return null;
+        if (AddCosts.getText().toString().isEmpty()) return null;
         else charge.setCharge_amount(Float.parseFloat(AddCosts.getText().toString()));
         charge.setDate(dm.getDate());
         return charge;
     }
 
-
     public void testapp(View view) {
-        Intent BudgetIntent = new Intent(this,BudgetActivity.class);
+        Intent BudgetIntent = new Intent(this, BudgetActivity.class);
         startActivity(BudgetIntent);
         this.finish();
 
-    }
-
-
-    public static Context getContextOfApplication() {
-        return contextOfApplication;
     }
 
     @Override

@@ -106,9 +106,11 @@
             android:layout_height="250dp"
             android:id="@+id/overview_lv"
 
-            android:background="#bf888b65"
+            android:background="@drawable/wasserzeichen"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:backgroundTint="#828c8f67"
+            android:backgroundTintMode="src_atop" />
 
         <LinearLayout
             android:orientation="horizontal"

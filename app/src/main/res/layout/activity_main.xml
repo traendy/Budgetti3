@@ -6,7 +6,7 @@
 
     tools:context=".MainActivity"
 
-    android:background="#828c8f67"
+    android:background="#bf888b65"
     android:padding="5dp">
 
     <ImageView
@@ -18,13 +18,16 @@
         android:baselineAlignBottom="false"
         android:adjustViewBounds="true" />
 
-    <ListView
+    <ExpandableListView
         android:layout_width="wrap_content"
         android:layout_height="250dp"
-        android:id="@+id/listView"
-        android:background="#828c8f67"
+        android:id="@+id/expListView"
+        android:background="@drawable/wasserzeichen"
         android:smoothScrollbar="false"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:backgroundTint="#828c8f67"
+        android:backgroundTintMode="src_atop" />
+
 
     <LinearLayout
         android:orientation="vertical"
