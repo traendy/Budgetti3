@@ -22,7 +22,7 @@ public class Charges {
     String date;
 
     public String getDate() {
-        return date;
+        return ("   "+date);
     }
 
     public void setDate(String date) {

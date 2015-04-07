@@ -79,7 +79,7 @@
             android:layout_height="40dp"
             >
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="30dp"
                 android:id="@+id/Addname"
 
@@ -90,7 +90,7 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="30dp"
                 android:id="@+id/Addcosts"
 

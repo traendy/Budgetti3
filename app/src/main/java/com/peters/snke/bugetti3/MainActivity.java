@@ -3,6 +3,7 @@ package com.peters.snke.bugetti3;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +18,10 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 
 public class MainActivity extends Activity {
@@ -101,35 +104,25 @@ public class MainActivity extends Activity {
     private void loadChargeList() throws SQLException {
         Dao<Charges, Integer> dao = null;
         dao = helper.getChargeDao();
+       List<List<String>> listOfLists = new ArrayList<List<String>>();//erstellen einer Liste in die dann wiederrum die listen mit den name amounts eingefügt wird
         chargeList = dao != null ? dao.queryForAll() : null;
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
-        String oldDate, newDate;
-        for (int i = 0; i < chargeList.size(); i++) {
-            newDate = chargeList.get(i).getDate();
-            listDataHeader.add(newDate);
-            for (int k = 0; k < listDataHeader.size(); k++) {
-                int n = listDataHeader.size();
-                oldDate = listDataHeader.get(k);
-                if (n <= k + 1) {
-                    newDate = listDataHeader.get(k + 1);
-                }
-                if (oldDate == newDate) listDataHeader.remove(k + 1);
-            }
+        List<String> dateList = new ArrayList<String>();
+        List<String> contentList = new ArrayList<String>();
+        List<String> contentPartList = new ArrayList<String>();
+        int sizeofChargelist=chargeList.size();
+        StringBuilder sb = new StringBuilder();
+        for(int dateCounter=0; dateCounter<sizeofChargelist-1; dateCounter++){
+            if(!(chargeList.get(dateCounter).getDate().equals("old")))listDataHeader.add(chargeList.get(dateCounter).getDate());
         }
-        for (int l = 0; l < listDataHeader.size(); l++) {
-            List<String> childList = new ArrayList<String>();
-            String HeaderDate = listDataHeader.get(l);
-            int m = 0;
-            StringBuilder sb = new StringBuilder();
-            while (HeaderDate == chargeList.get(m).getDate()) {
-                sb.append(chargeList.get(m).getCharge_name()).append(": \t\t").append(String.valueOf(chargeList.get(m).getCharge_amount()));
-                childList.add(sb.toString());
-                m++;
-            }
-            listDataChild.put(listDataHeader.get(l), childList);
-        }
+        // ausgabe überprüfen warum printed er erst beim zweiten klick, tut er das wirklich, klick animation!! list adapter scheint sonst soweit zu
+        // funktionieren. hinzufügen der neuen datae testen an zwei tagen also heute abend eine list erstellen und morgen einen wert hnzufügen
+        // liste nach old durchsuchen und wenn sie old ist ( ggf mit trim()) dann kommt sie als list in list of lists
 
+    for(int hashCounter=0; hashCounter<listDataHeader.size(); hashCounter++){
+        listDataChild.put(listDataHeader.get(hashCounter), null);
+    }
     }
 
     public void reset(View view) throws SQLException {
@@ -137,11 +130,13 @@ public class MainActivity extends Activity {
         dao = helper.getChargeDao();
         dao.delete(chargeList);
         helper.deleteAll();
-
+        DateManager dm = new DateManager();
+        dm.deleteOldDate();
         Intent resetIntent = new Intent(this, ResetActivity.class);
         startActivity(resetIntent);
         this.finish();
     }
+
 
     public void calculate(View view) {
 
@@ -156,7 +151,8 @@ public class MainActivity extends Activity {
         bm.setBudget(newBudget);
         ResultText.setText(String.valueOf(newBudget) + " €");
 
-        addChargeToDb(charge);
+        //addChargeToDb(charge); hab ich rausgenommen da ich in getCharge from view den charge zur db hinuzufügen will
+
         updateListView();
 
     }
@@ -173,27 +169,63 @@ public class MainActivity extends Activity {
         Dao<Charges, Integer> dao = null;
         try {
             dao = helper.getChargeDao();
+            dao.create(charge);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (dao != null) {
-            try {
-                dao.create(charge);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+
+
+
     }
 
     private Charges getChargeFromView() {
         DateManager dm = new DateManager();
         Charges charge = new Charges();
+        Dao<Charges, Integer> dao = null;
+        int size = 1;
+        String oldDate = "";
+
+        try {
+
+            dao = helper.getChargeDao();
+            if (dao != null) {
+                size = dao.queryForAll().size();
+                if (size > 0) oldDate = (dao.queryForId(size).getDate());
+            }
+            System.out.println("Die größe der db ist: " + size);
+            System.out.println("old date an der id    " + (size) + " ist: " + oldDate.trim());
+            System.out.println("dm.getDate() ist:     " + dm.getDate().trim());
+            System.out.println(dao.queryForAll());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         if (AddName.getText().toString().isEmpty()) charge.setCharge_name("Default");
         else charge.setCharge_name(AddName.getText().toString());
         if (AddCosts.getText().toString().isEmpty()) return null;
         else charge.setCharge_amount(Float.parseFloat(AddCosts.getText().toString()));
-        charge.setDate(dm.getDate());
+
+        if (dm.getOldDate().equals(dm.getDate())) charge.setDate("old");
+        else {
+            dm.setOldDate(dm.getDate());
+            charge.setDate(dm.getDate());
+            }
+
+
+                    //if (oldDate.trim().equals(dm.getDate().trim())||oldDate.trim().equals("old")) charge.setDate("old");
+                   // else charge.setDate(dm.getDate());
+
+        try {
+            dao.create(charge);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println(dao.queryForAll());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return charge;
     }
 
