@@ -39,7 +39,8 @@ public class MainActivity extends Activity {
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     BudgetManager bm;
-
+    List<List<String>> listOfLists;
+    List<String> contentList;
     public static Context getContextOfApplication() {
         return contextOfApplication;
     }
@@ -103,26 +104,53 @@ public class MainActivity extends Activity {
 
     private void loadChargeList() throws SQLException {
         Dao<Charges, Integer> dao = null;
+        boolean listwork = true;
         dao = helper.getChargeDao();
-       List<List<String>> listOfLists = new ArrayList<List<String>>();//erstellen einer Liste in die dann wiederrum die listen mit den name amounts eingefügt wird
+        listOfLists= new ArrayList<List<String>>();//erstellen einer Liste in die dann wiederrum die listen mit den name amounts eingefügt wird
         chargeList = dao != null ? dao.queryForAll() : null;
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
         List<String> dateList = new ArrayList<String>();
-        List<String> contentList = new ArrayList<String>();
-        List<String> contentPartList = new ArrayList<String>();
+        contentList = new ArrayList<String>();
+
         int sizeofChargelist=chargeList.size();
         StringBuilder sb = new StringBuilder();
-        for(int dateCounter=0; dateCounter<sizeofChargelist-1; dateCounter++){
-            if(!(chargeList.get(dateCounter).getDate().equals("old")))listDataHeader.add(chargeList.get(dateCounter).getDate());
-        }
-        // ausgabe überprüfen warum printed er erst beim zweiten klick, tut er das wirklich, klick animation!! list adapter scheint sonst soweit zu
-        // funktionieren. hinzufügen der neuen datae testen an zwei tagen also heute abend eine list erstellen und morgen einen wert hnzufügen
-        // liste nach old durchsuchen und wenn sie old ist ( ggf mit trim()) dann kommt sie als list in list of lists
+        for(int dateCounter=0; dateCounter<sizeofChargelist; dateCounter++){
+            if(!(chargeList.get(dateCounter).getDate().trim().equals("old")))listDataHeader.add(chargeList.get(dateCounter).getDate());
 
-    for(int hashCounter=0; hashCounter<listDataHeader.size(); hashCounter++){
-        listDataChild.put(listDataHeader.get(hashCounter), null);
-    }
+        }
+        if(listDataHeader.size()==0){
+            if(chargeList.size()==0)return;
+            contentList.add(chargeList.get(0).getCharge_name()+":::"+chargeList.get(0).getCharge_amount());
+            listDataChild.put(chargeList.get(0).getDate(), contentList);
+            return;
+        }
+        for(int p =0; p<listDataHeader.size(); p++){
+
+            for(int k=0; k<chargeList.size();k++) {
+
+                List<String> contentPartList = new ArrayList<String>();
+                while(listwork){
+
+
+                    sb.append(chargeList.get(k).getCharge_name()).append(":::").append(chargeList.get(k).getCharge_amount());
+
+                    contentPartList.add(sb.toString());
+                    sb.setLength(0);
+                    if(contentPartList.size()==0)return;
+                    k++;
+                    if(k>=chargeList.size())break;
+                    if(!(chargeList.get(k).equals(null))&&!(chargeList.get(k).getDate().trim().equals("old")))listwork=false;
+                }
+                System.out.println(contentPartList);
+                listOfLists.add(contentPartList);
+
+                listwork=true;
+            }
+
+            listDataChild.put(listDataHeader.get(p),listOfLists.get(p));
+        }
+
     }
 
     public void reset(View view) throws SQLException {

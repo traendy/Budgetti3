@@ -96,7 +96,7 @@
                 android:text="Ausgabe"
                 android:id="@+id/expensives_btn"
                 android:layout_weight="1"
-                android:background="#828f1600"
+                android:background="#bf888b65"
                 android:textStyle="bold"
                 android:textSize="20sp" />
         </LinearLayout>
