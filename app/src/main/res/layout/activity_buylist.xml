@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#bf888b65"
+    android:padding="5dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:id="@+id/imageView5"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/head" />
+
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/buy_list_explv"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/wasserzeichen"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="New List"
+        android:id="@+id/newlist_btn"
+        android:layout_gravity="center_horizontal"
+        android:background="#bf888b65"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Main Menu"
+        android:id="@+id/mainmenu_btn"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="#828f1600" />
+</LinearLayout>
