@@ -258,8 +258,8 @@ public class MainActivity extends Activity {
     }
 
     public void testapp(View view) {
-        Intent BudgetIntent = new Intent(this, BudgetActivity.class);
-        startActivity(BudgetIntent);
+        Intent menuIntent = new Intent(this, menu_activity.class);
+        startActivity(menuIntent);
         this.finish();
 
     }
